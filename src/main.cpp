@@ -176,14 +176,14 @@ GameResults updateGameResults(GameResults gameResults, EndGameState result)
   return gameResults;
 }
 
-enum Item {STONE = 1, PAPER = 2, SCISSOR = 3};
-string item_to_string(Item item)
+enum Choice {STONE = 1, PAPER = 2, SCISSOR = 3};
+string getChoiceName(Choice choice)
 {
-  string items[] = {"Stone", "Paper", "Scissor"};
-  return items[item - 1];
+  string choices[] = {"Stone", "Paper", "Scissor"};
+  return choices[choice - 1];
 }
 
-EndGameState roundResult(Item playerChoice, Item computerChoice)
+EndGameState roundResult(Choice playerChoice, Choice computerChoice)
 {
   if(playerChoice == computerChoice)
     return DRAW;
@@ -195,8 +195,8 @@ EndGameState roundResult(Item playerChoice, Item computerChoice)
   return LOSE;
 }
 
-void printRoundResult(unsigned short roundNumber, Item playerChoice, 
-  Item computerChoice)
+void printRoundResult(unsigned short roundNumber, Choice playerChoice, 
+  Choice computerChoice)
 {
   EndGameState result = roundResult(playerChoice, computerChoice);
   
@@ -205,15 +205,15 @@ void printRoundResult(unsigned short roundNumber, Item playerChoice,
   printLine("");
   printLine("__________ Round [" + to_string(roundNumber) + "] __________");
   printLine("");
-  printLine(" Player   Choice: " + item_to_string(playerChoice));
-  printLine(" Computer Choice: " + item_to_string(computerChoice));
+  printLine(" Player   Choice: " + getChoiceName(playerChoice));
+  printLine(" Computer Choice: " + getChoiceName(computerChoice));
   printLine(" Round Winner   : [" + getWinnerName(result) + "]");
   printLine("_______________________________");
 }
 
-Item getItem(unsigned short choice)
+Choice getChoice(unsigned short choice)
 {
-  return (Item) choice;
+  return (Choice) choice;
 }
 
 EndGameState playRound(unsigned short roundNumber)
@@ -224,15 +224,15 @@ EndGameState playRound(unsigned short roundNumber)
     "Your Choice: [1]:Stone, [2]:Paper [3]:Scissor ? ", 
     "Wrong input, Please try again.");
 
-  Item playerChoice = getItem(choice);
-  Item computerChoice = getItem(getBoundedRandom(1, 3)); 
+  Choice playerChoice = getChoice(choice);
+  Choice computerChoice = getChoice(getBoundedRandom(1, 3)); 
 
   printRoundResult(roundNumber, playerChoice, computerChoice);
 
   return roundResult(playerChoice, computerChoice);
 }
 
-void gamePlay(unsigned short rounds)
+void playGame(unsigned short rounds)
 {
   GameResults gameResults;
 
@@ -261,7 +261,7 @@ void game()
     unsigned rounds = getBoundedInteger(1, 10, "How many rounds 1 To 10: ",
     "Wrong input, Please try again.");
     
-    gamePlay(rounds);
+    playGame(rounds);
 
     playMore = wantToPlayMore();
   }
